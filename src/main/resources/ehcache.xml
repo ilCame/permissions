@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache:config
+        xmlns:ehcache="http://www.ehcache.org/v3"
+        xmlns:jcache="http://www.ehcache.org/v3/jsr107">
+
+    <!-- Define a default cache template -->
+    <ehcache:cache-template name="defaultTemplate">
+        <ehcache:expiry>
+            <ehcache:ttl>7200</ehcache:ttl>
+        </ehcache:expiry>
+        <ehcache:heap unit="entries">10000</ehcache:heap>
+    </ehcache:cache-template>
+
+    <!-- default query cache regions -->
+    <ehcache:cache alias="default-query-results-region" uses-template="defaultTemplate"/>
+    <ehcache:cache alias="default-update-timestamps-region" uses-template="defaultTemplate">
+        <ehcache:expiry>
+            <ehcache:none/>
+        </ehcache:expiry>
+        <ehcache:heap unit="entries">100000</ehcache:heap>
+    </ehcache:cache>
+
+    <!-- entities region -->
+    <ehcache:cache alias="defaultCache" uses-template="defaultTemplate" />
+</ehcache:config>

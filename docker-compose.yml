@@ -1,0 +1,21 @@
+---
+version: "3.2"
+
+services:
+  db:
+    container_name: permission-db
+    image: postgres
+    restart: no
+    ports:
+      - "5433:5432"
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: permission
+      POSTGRES_USER: permission
+      POSTGRES_DB: permission
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"

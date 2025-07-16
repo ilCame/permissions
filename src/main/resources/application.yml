@@ -1,0 +1,79 @@
+server:
+  port: 8087
+
+spring:
+  profiles:
+    active: local
+  application:
+    name: permission
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  jpa:
+    generate-ddl: false
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        cache:
+          use_second_level_cache: true
+          region.factory_class: jcache
+          use_query_cache: true
+          auto_evict_collection_cache: true
+          redisson:
+            fallback: true
+            defaultCache:
+              eviction:
+                max_entries: 10000
+              expiration:
+                time_to_live: 7200000 # in milliseconds
+                max_idle_time: 7200000 # in milliseconds
+            config: redisson.yaml
+        javax:
+          cache:
+            provider: org.ehcache.jsr107.EhcacheCachingProvider
+            uri: classpath:ehcache.xml
+        event:
+          merge:
+            entity_copy_observer: allow
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 10
+        generate_statistics: true
+  flyway:
+    enabled: true
+    locations: "classpath:db/schema/postgresql"
+    out-of-order: true
+  sql:
+    init:
+      mode: always
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+      FAIL_ON_EMPTY_BEANS: false
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5433/permission
+    username: permission
+    password: permission
+
+elide:
+  json-api:
+    path: /permission
+    enabled: true
+    links:
+      enabled: true
+  api-docs:
+    enabled: true
+    path: /v3/api-docs/permission
+    version: openapi_3_0
+  default-page-size: 20
